@@ -1,0 +1,58 @@
+{
+  "name": "@nlbs/og",
+  "version": "0.1.0",
+  "packageManager": "pnpm@12.9.1",
+  "description": "Open Graph image presets for Nanoo Labs sites",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "assets",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nanoolabs/og.git"
+  },
+  "homepage": "https://github.com/nanoolabs/og#readme",
+  "bugs": {
+    "url": "https://github.com/nanoolabs/og/issues"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test",
+    "check": "pnpm build && pnpm test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "keywords": [
+    "nanoo",
+    "open-graph",
+    "og-image",
+    "seo",
+    "astro"
+  ],
+  "author": "Adnan Slamet Wibowo <adnan@nanoolabs.dev>",
+  "license": "ISC",
+  "peerDependencies": {
+    "astro-og-canvas": ">=0.13.0"
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@types/node": "^26.5.1",
+    "astro-og-canvas": "^0.13.2",
+    "eslint": "^10.12.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0"
+  }
+}
