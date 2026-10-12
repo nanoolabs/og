@@ -1,0 +1,47 @@
+name: Automated Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Track and Deploy Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get Version
+        id: get_version
+        run: echo "VERSION=v$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Create Tag
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          if ! git rev-parse "${{ steps.get_version.outputs.VERSION }}" >/dev/null 2>&1; then
+            git tag ${{ steps.get_version.outputs.VERSION }}
+            git push origin ${{ steps.get_version.outputs.VERSION }}
+          else
+            echo "Tag ${{ steps.get_version.outputs.VERSION }} already exists, skipping"
+          fi
+
+      - name: Generate Central Changelog
+        uses: nanoolabs/actions/release-action@v2
+        id: release_tool
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          name: ${{ steps.get_version.outputs.VERSION }}
+          body: ${{ steps.release_tool.outputs.changelog }}
+          target_commitish: main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
