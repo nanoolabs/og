@@ -1,0 +1,15 @@
+name: Mirror
+
+on:
+  push:
+    branches: ['**']
+    tags: ['**']
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    uses: nanoolabs/actions/.github/workflows/reusable-mirror.yml@mirror-v1
+    secrets:
+      CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
